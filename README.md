@@ -4,13 +4,21 @@ A TUI launcher for Aphrodite .yaml files (uses the micromamba runtime).
 Made with <3 by inflatebot and Google Gemini, on behalf of [Allura on HuggingFace](https://huggingface.co/allura-org)
 
 # Rationale
-The Micromamba runtime for Aphrodite is really helpful, but the first time I had to do this nonsense:
+The Micromamba runtime for Aphrodite is really helpful for skipping over Python Dependency Hell, but it's unwieldy to use. The first time I had to do this nonsense:
 `./home/user/AI/text/aphrodite-engine/runtime.sh aphrodite run /home/asriel/AI/text/models/GGUF/lmstudio-community/Mistral-Small-24B-Instruct-2501-Q6_K.gguf --max-model-len 8192 --max-num-seqs 1 --enforce-eager --enable-chunked-prefill --tokenizer-mode mistral --tokenizer mistralai/Mistral-Small-24B-Instruct-2501`
-I figured that I was at the point where .yaml configs were going to start making sense. But managing them is still a hassle, and I've been writing a lot of stub scripts and putting them in `~/.local/bin` to smooth the process of launching them, but I still had to pass arguments to Aphrodite to get it to go, so I'd still be writing a bunch by hand, and wouldn't it be nice to have a little mini-launcher to manage my Aphrodite configurations?
+I figured that I was at the point where .yaml configs were going to start making sense.
+
+But managing those configs is still a hassle, and I've been writing a lot of stub scripts and putting them in `~/.local/bin` to smooth the process of launching them, but I still had to pass arguments to Aphrodite to get it to go, so I'd still be writing a bunch by hand, and wouldn't it be nice to have a little mini-launcher to manage my Aphrodite configurations?
 
 ....So I made one.
 
 And that's this.
+
+Note that this doesn't *install* Aphrodite for you, you have to do that yourself still; but the embedded runtime is the most hands-off way of doing that by far. The point of `cassandra` is to make *using* the runtime less tedious.
+
+Features:
+- It's one file!
+- It's just Bash! You don't have to install anything else! (Besides Aphrodite. and maybe `whiptail` if you're on a server distro.)
 
 # Instructions
 
