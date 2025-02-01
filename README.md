@@ -26,6 +26,7 @@ And that's this.
 
 # TODO:
 - *Basic, tentative support* for non-micromamba methods of use. Barrier: Micromamba is basically the only non-Docker way of using Aphrodite on my Debian Stable (+ghosts) system at the moment; I have the wrong CUDA toolkit on my system and can't get it to compile, because Debian Bookworm's `glibc` is old and crusty and trying to splice in a new one is a *great* way to brick a Linux system.
+- Offer to set up the runtime for the user? Worth approaching this idea with caution.
 - A flag to specify the name of an existing config and skip the TUI; moving the whole thing to a system resembling ollama modelfiles (except it doesn't suck as much. Sorry ollama, I love the *rest* of your product though)
 - A config file *for `cassandra`* to use rather than environment variables, which is probably more convenient for folks without resourcified shell env scripts (which is gonna be most people). This would also make it viable to prompt for paths on first launch (since I refuse to append crap to the user's dotfiles)
 - An interface to create a new config file (this is low priority because Aphrodite's sample config is so well documented that I'd imagine most people would be comfortable spinning their own in a text editor, especially at the proficiency level `cassandra` assumes. This concept could be useful for *editing* a config though, especially to test different settings non-destructively. We'll see!)
