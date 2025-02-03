@@ -3,15 +3,18 @@
 # Cassandra, by inflatebot
 # Believe it or not, it's a TUI launcher for Aphrodite Engine. 
 # I'll be here all week.
-# Intended for use with installations based on the embedded micromamba runtime.
 
-# TO USER: prefer to export $APHRODITE_ENGINE and $APHRODITE_ENGINE_CONFIGS in
+# TO USER: prefer to export $APHRODITE_ENGINE, $APHRODITE_ENGINE_CONFIGS and $APHRODITE_LAUNCH_COMMAND in
 # 	your bash/zshrc (or w/e shell you use) over modifying this script.
 #	Cassandra will not override these settings!
 # Some other environment variables you may consider setting there:
 # HF_HUB_CACHE: Download location for HuggingFace models, to avoid clogging your /home directory
 # HF_HUB_ENABLE_HF_TRANSFER=true: Enable faster downloading from the Hub, of particular use to RunPod users.
 #	Requires hf_transfer to be installed; see https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables#hfhubenablehftransfer
+# By default, Cassandra uses the embedded micromamba runtime. But if you prefer to launch Aphrodite another way, you can do this by setting the $APHRODITE_LAUNCH_COMMAND environment variable.  By default it looks like this:
+# 	APHRODITE_LAUNCH_COMMAND="$APHRODITE_ENGINE/runtime.sh aphrodite yaml $full_path"
+# 	(where $full_path is derived by Cassandra, and shouldn't be forced as an environment variable.)
+
 
 # Check if variables for Aphrodite Engine and its configs are in the environment, and if so, defer to them
 if [ -z $APHRODITE_ENGINE ]; then
@@ -21,6 +24,8 @@ fi
 if [ -z $APHRODITE_ENGINE_CONFIGS ]; then
 	export APHRODITE_ENGINE_CONFIGS=$HOME/.cassandra/configs
 fi
+
+# See Line 79 for the launch command variable. Bash can't hoist, so this needs to be set after we determine the config path. I could make functions to set these, but I don't... want to.
 
 # startup checks
 if [ ! -f "$APHRODITE_ENGINE/runtime.sh" ]; then
@@ -71,8 +76,14 @@ fi
 # Construct full path and print to stdout
 if [ -n "$selection" ]; then
   full_path="$APHRODITE_ENGINE_CONFIGS/$selection"
-  echo "$full_path"
+  echo "Config path: $full_path"
 fi
 
-# Launch Aphrodite via micromamba runtime
-exec $APHRODITE_ENGINE/runtime.sh aphrodite yaml $full_path
+# we have to do this one down here cuz bash doesn't hoist
+if [ -z $APHRODITE_LAUNCH_COMMAND ]; then
+	export APHRODITE_LAUNCH_COMMAND="$APHRODITE_ENGINE/runtime.sh aphrodite yaml $full_path"
+fi
+
+# Launch Aphrodite via launch command
+echo "Launch command: $APHRODITE_LAUNCH_COMMAND"
+exec $APHRODITE_LAUNCH_COMMAND
